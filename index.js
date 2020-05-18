@@ -1,1 +1,31 @@
-!function(e){var r={};function t(n){if(r[n])return r[n].exports;var o=r[n]={i:n,l:!1,exports:{}};return e[n].call(o.exports,o,o.exports,t),o.l=!0,o.exports}t.m=e,t.c=r,t.d=function(e,r,n){t.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:n})},t.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},t.t=function(e,r){if(1&r&&(e=t(e)),8&r)return e;if(4&r&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(t.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)for(var o in e)t.d(n,o,function(r){return e[r]}.bind(null,o));return n},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},t.p="",t(t.s=0)}([function(e,r,t){const n=t(1),o=t(2);e.exports=function(e){let r=e;const t=this.async(),i=this.query.from;if(!i)throw Error("You need to specify slides root folder! Eg.: ./src/slides/");o.readdir(i,(o,u)=>{const l=e.match(/(import.*from.*;)(?!.*\1)/g),c=l&&l[l.length-1]||null;let f=c&&c+"\n"||"",s="";u.forEach((e,r)=>{/slide.*\.pug$/.test(e)&&(f+=`import revealSlide${r} from '${n.resolve(i,e)}';\n`,s+="${revealSlide"+r+"}\n")}),r=c?r.replace(c,f):f+r,r=r.replace("\x3c!--inject:slides--\x3e",s),t(null,r)})}},function(e,r){e.exports=require("path")},function(e,r){e.exports=require("fs")}]);
+/* eslint-disable no-useless-concat */
+const path = require('path');
+const fs = require('fs');
+
+module.exports = function RevealSliderLoader(source) {
+  let newSource = source;
+  const callback = this.async();
+  const fromPath = this.query.from;
+  if (!fromPath) throw Error('You need to specify slides root folder! Eg.: ./src/slides/');
+
+  fs.readdir(fromPath, (err, files) => {
+    const regex = /(import.*from.*;)(?!.*\1)/g;
+    const imports = source.match(regex);
+    const lastImport = (imports && imports[imports.length - 1]) || null;
+    let extendedImport = (lastImport && `${lastImport}\n`) || '';
+    let stringTemplatesImports = '';
+    files.forEach((file, i) => {
+      if (/slide.*\.pug$/.test(file)) {
+        extendedImport += `import revealSlide${i} from '${path.resolve(fromPath, file)}';\n`;
+        stringTemplatesImports += '${' + `revealSlide${i}` + '}\n';
+      }
+    });
+    if (lastImport) {
+      newSource = newSource.replace(lastImport, extendedImport);
+    } else {
+      newSource = extendedImport + newSource;
+    }
+    newSource = newSource.replace('<!--inject:slides-->', stringTemplatesImports);
+    callback(null, newSource);
+  });
+};
