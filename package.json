@@ -1,6 +1,6 @@
 {
   "name": "pug-slides-loader",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Simple Webpack loader for Reveal.js slides (.pug files) to fast inject them in one place",
   "main": "index.js",
   "scripts": {

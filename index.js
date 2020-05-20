@@ -16,7 +16,7 @@ module.exports = function RevealSliderLoader(source) {
     let stringTemplatesImports = '';
     files.forEach((file, i) => {
       if (/slide.*\.pug$/.test(file)) {
-        extendedImport += `import revealSlide${i} from '${path.resolve(fromPath, file)}';\n`;
+        extendedImport += `import revealSlide${i} from '${path.resolve(fromPath, file).replace(/\\/g, '/')}';\n`;
         stringTemplatesImports += '${' + `revealSlide${i}` + '}\n';
       }
     });
