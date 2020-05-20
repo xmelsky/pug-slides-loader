@@ -39,6 +39,10 @@ There are some examples of use:
 
 #### index.ts
 
+> note: all slides are sorted by default from lower number to highest
+> but you can specify custom order.
+
+
 ```
 import Reveal from 'reveal.js';
 import 'sass/main.scss';
@@ -46,6 +50,7 @@ import 'sass/main.scss';
 document.body.innerHTML = `<div class="reveal">
 <div class="slides">
     <!--inject:slides--> // HERE SLIDES WILL BE INJECTED
+    <!--inject:order=15,18,11,0,2,3,4,5,6,7,8,21,12,--> // CUSTOM RENDER ORDER
     <section>
       <img data-src="images/logo.webp">
     </section>
