@@ -1,5 +1,7 @@
 ## Custom webpack loader to use with [these](https://github.com/xmelsky/reveal.js-boilerplates) boilerplates
 
+## [NPM Package](https://www.npmjs.com/package/pug-slides-loader)
+
 ### It's used for auto import reveal.js slides (.pug files) during webpack compilation process. It help keep your project structure clean and simple.
 
 There are some examples of use:
